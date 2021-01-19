@@ -182,7 +182,7 @@ p {
   margin: auto;
   color: var(--color-blue);
   border: 1px solid var(--color-blue);
-  border-radius: 50%;
+  border-radius: 30%;
   margin-bottom: 16px;
 }
 
@@ -190,7 +190,8 @@ p {
   transition: all var(--animation-duration) ease;
 }
 
-.major__icon:hover i {
+.major__icon i:hover {
+  cursor: pointer;
   color: var(--color-pink);
   transform: rotate(-30deg) scale(1.2);
 }
