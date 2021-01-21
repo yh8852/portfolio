@@ -21,15 +21,17 @@ navBarMenu.addEventListener('click', (event)=>{
   if (link == null){
     return;    
   }    
-  const scrollto = document.querySelector(link);
-  scrollto.scrollIntoView({behavior: "smooth"})
+  scrollIntoView(link);
 })
 
+//Handle click on "contact me "button home
 const ContactMe = document.querySelector('.home__contact');
-ContactMe.addEventListener('click',(event)=>{
-  const contact = event.target;  
-  const contact_link = contact.dataset.link;  
-  console.log(contact_link)
-  const ScrollToContact = document.querySelector(contact_link);
-  ScrollToContact.scrollIntoView({behavior: "smooth"})
+ContactMe.addEventListener('click',()=>{
+  scrollIntoView('#contact');  
 })
+
+
+function scrollIntoView(selection){
+  const scrollto = document.querySelector(selection);
+  scrollto.scrollIntoView({behavior: "smooth"});
+}
