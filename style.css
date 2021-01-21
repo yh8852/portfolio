@@ -152,6 +152,7 @@ p {
   padding: 40px;
   text-align: center;
   padding-top: 100px;
+  opacity: 1;
 }
 
 .home__avatar {

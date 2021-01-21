@@ -11,7 +11,6 @@ document.addEventListener('scroll', ()=>{
   }
 });
 
-
 // Handle scrollin when tapping on the navbar menu
 const navBarMenu = document.querySelector('.navbar__menu');
 navBarMenu.addEventListener('click', (event)=>{
@@ -22,16 +21,22 @@ navBarMenu.addEventListener('click', (event)=>{
     return;    
   }    
   scrollIntoView(link);
-})
+});
 
 //Handle click on "contact me "button home
 const ContactMe = document.querySelector('.home__contact');
 ContactMe.addEventListener('click',()=>{
   scrollIntoView('#contact');  
-})
-
+});
 
 function scrollIntoView(selection){
   const scrollto = document.querySelector(selection);
   scrollto.scrollIntoView({behavior: "smooth"});
-}
+};
+
+// Make home slowly fade to transparent as the window scrolls down
+const home = document.querySelector('.home__container');
+const homeHeight = home.getBoundingClientRect().height;
+document.addEventListener('scroll', ()=>{
+  home.style.opacity = 1- scrollY / homeHeight;
+});
