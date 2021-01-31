@@ -22,6 +22,8 @@ navBarMenu.addEventListener('click', (event) => {
   }
   navBarMenu.classList.remove('display');
   scrollIntoView(link);  
+  selectNavItem(target)
+
 });
 
 // Navbar Toggle button for small screen
@@ -33,13 +35,9 @@ navbarToggleBtn.addEventListener('click', ()=>{
 //Handle click on "contact me "button home
 const ContactMe = document.querySelector('.home__contact');
 ContactMe.addEventListener('click', () => {
-  scrollIntoView('#contact');
+  scrollIntoView('#contact');  
 });
 
-function scrollIntoView(selection) {
-  const scrollto = document.querySelector(selection);
-  scrollto.scrollIntoView({ behavior: "smooth" });
-};
 
 // Make home slowly fade to transparent as the window scrolls down
 const home = document.querySelector('.home__container');
@@ -97,4 +95,67 @@ WorkBtnContainer.addEventListener('click', (event) => {
     });
 
   },300);
+});
+
+
+
+// 1. 모든 섹션 요소들과 메뉴 아이템들을 가지고온다. 
+// 2. IntersectionObserver를 이용해서 모든 섹션들을 관찰한다.
+// 3. 보여지는 섹션에 해당하는 메뉴 아이템을 활성화시킨다.
+
+const sectionIDs = ['#home', '#about', '#skills', '#work', '#testimonials', '#contact'];
+const sections = sectionIDs.map(id =>document.querySelector(id));
+const navItems = sectionIDs.map(id=>document.querySelector(`[data-link="${id}"]`));
+
+let selectedNavIndex;
+let selectedNavItem = navItems[0];
+
+function selectNavItem(selected){
+  selectedNavItem.classList.remove('active');
+  selectedNavItem = selected;  
+  selectedNavItem.classList.add('active');
+}
+
+function scrollIntoView(selection) {
+  const scrollto = document.querySelector(selection);
+  scrollto.scrollIntoView({ behavior: "smooth" });
+  selectNavItem(navItems[sectionIDs.indexOf(selection)]);
+
+};
+
+const observerOptions={
+  root:null,
+  rootMargin: '0px',
+  threshold : 0.3
+};
+
+const observerCallback = (entries, observer) => {
+  entries.forEach(entry =>{
+    if (!entry.inIntersecting && entry.intersectionRatio > 0){
+      const index = sectionIDs.indexOf(`#${entry.target.id}`);
+      
+        if (entry.boundingClientRect.y < 0){
+            // 스크롤이 아래로 되어서 페이지가 올라옴
+            selectedNavIndex = index +1;
+        }else{
+            selectedNavIndex = index -1;
+        }
+        
+    };
+  });
+};
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+sections.forEach(section => observer.observe(section));
+
+window.addEventListener('wheel', ()=>{
+  console.log(window.scrollY+window.innerHeight)
+  console.log(document.body.clientHeight)
+
+  if (window.scrollY === 0 ){
+    selectedNavIndex = 0;
+  }else if(Math.round(window.scrollY+window.innerHeight) >= document.body.clientHeight){    
+    selectedNavIndex = navItems.length-1;
+  }  
+  selectNavItem(navItems[selectedNavIndex]);
 });
